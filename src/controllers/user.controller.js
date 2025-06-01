@@ -114,6 +114,19 @@ const refreshToken = async (req, res) => {
     }
 }
 
+const logoutUser = async (req, res) => {
+    try {
+        return res.status(200).json({
+            status: 'OK',
+            message: 'Logout successfully'
+        })
+    } catch (error) {
+        return res.status(404).json({
+            message: error
+        })
+    }
+}
+
 module.exports = {
     createUser,
     loginUser,
@@ -121,5 +134,6 @@ module.exports = {
     deleteUser,
     getAllUser,
     getDetailsUser,
-    refreshToken
+    refreshToken,
+    logoutUser
 }

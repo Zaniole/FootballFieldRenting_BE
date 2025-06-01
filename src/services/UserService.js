@@ -1,21 +1,21 @@
-const User = require("../models/UserModel");
+const User = require("../models/user.model");
 const { generalAccessToken, generalRefreshToken } = require("./JwtService");
 
 const createUser = (newUser) => {
     return new Promise(async (resolve, reject) => {
-        const { name, email, phone, password } = newUser;
+        const { name, email, phone, password, role } = newUser;
         try {
             const checkUser = await User.findOne({ $or: [{ email: email }, { phone: phone }] });
 
             if (checkUser) {
                 if (checkUser.email === email) {
-                    resolve({
-                        status: 'OK',
+                   return resolve({
+                        status: 'ERROR',
                         message: 'Email already exists'
                     })
                 } else if (checkUser.phone === phone) {
-                    resolve({
-                        status: 'OK',
+                   return resolve({
+                        status: 'ERROR',
                         message: 'Phone number already exists'
                     })
                 }
@@ -25,7 +25,8 @@ const createUser = (newUser) => {
                 name,
                 email,
                 phone,
-                password
+                password,
+                role
             })
 
             if (createdUser) {
@@ -50,7 +51,7 @@ const loginUser = (user) => {
             });
             if(checkUser === null){
                 resolve({
-                    status: 'OK',
+                    status: 'ERROR',
                     message: 'THE USER IS UNDEFINED',
                 })
             }
@@ -58,7 +59,7 @@ const loginUser = (user) => {
             const checkPassword = (checkUser.password === password);
             if(!checkPassword){
                 resolve({
-                    status: 'OK',
+                    status: 'ERROR',
                     message: 'WRONG EMAIL OR PASSWORD',
                 })
             }
@@ -165,9 +166,9 @@ const getDetailsUser = (id) => {
             })
 
             if(user === null){
-                resolve({
-                    status: 'OK',
-                    message: 'User not found'
+               return resolve({
+                    status: 'ERROR',
+                    message: 'User is not found'
                 })
             }
 

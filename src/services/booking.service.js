@@ -135,11 +135,51 @@ const updateBookingStatus = (bookingId, bookingData) => {
 	})
 }
 
+const matchingOpponent = (bookingId, opponentId) => {
+	return new Promise (async (resolve, reject) => {
+		try {
+			const checkBooking = await Booking.findById(bookingId);
+			const checkUser = await User.findById(opponentId)
+			if(!checkBooking){
+				resolve({
+					status: 'ERROR',
+					message: 'Booking is not found'
+				})
+			}
+
+			if(!checkUser) {
+				resolve({
+					status: 'ERROR',
+					message: 'User is not found'
+				})
+			}
+
+			const updatedBooking = await Booking.findByIdAndUpdate(bookingId, {
+				findingOpponent: false,
+				opponent: opponentId,
+				matchStatus: 'matched'
+			}, 
+			{
+				new: true
+			})
+
+			resolve({
+				status: 'OK',
+				message: 'Update booking successfully',
+				data: updatedBooking
+			})
+		} catch (error) {
+			reject(error)
+		}
+	})
+}
+
 module.exports = {
 	getAllBooking,
 	createBooking,
 	getBookingById,
 	getBookingByUserId,
 	getBookingByFieldId,
-	updateBookingStatus
+	updateBookingStatus,
+	matchingOpponent
 };

@@ -24,7 +24,10 @@ const bookingSchema = new mongoose.Schema({
 		required: true 
 	},
 	findingOpponent: { type: Boolean, default: false },
-	opponent: { type: SchemaTypes.ObjectId, ref:'User' },
+	opponent: { 
+		type: SchemaTypes.ObjectId, 
+		ref:'User' 
+	},
 	matchStatus: { 
 		type: String, 
 		enum: ['waiting', 'matched', 'cancelled'], 

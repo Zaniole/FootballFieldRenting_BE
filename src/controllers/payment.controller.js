@@ -45,11 +45,11 @@ const cancelPayment = async (req, res) => {
 
 const createTransactionZaloPay = async (req, res) => {
 	try {
-		const { user, amount, payment } = req.body;
+		const { user, amount, payment, isFindingOpponentType } = req.body;
 		if (!amount || !user || !payment) {
 			return res.status(400).json({ message: "Missing required fields!" });
 		}
-		const transaction = await ZaloPayService.createTransaction(user, amount, payment);
+		const transaction = await ZaloPayService.createTransaction(user, amount, payment, isFindingOpponentType);
 		return res.status(201).json(transaction);
 	} catch (error) {
 		return res.status(500).json({ message: error.message });
@@ -66,11 +66,36 @@ const handleCallback = async (req, res) => {
 	}
 }
 
+const refund = async (req, res) => {
+	try {
+		const { zalopayId, amount } = req.body;
+		console.log(zalopayId)
+		console.log(amount)
+		const response = await ZaloPayService.refund(zalopayId, amount)
+		return res.status(201).json(response);
+	} catch (error) {
+		return res.status(500).json({ message: error.message });
+	}
+}
+
+const queryRefund = async (req, res) => {
+	try {
+		const { refundId } = req.body;
+		console.log(req.body)
+		const response = await ZaloPayService.queryRefund(refundId)
+		return res.status(201).json(response);
+	} catch (error) {
+		return res.status(500).json({ message: error.message });
+	}
+}
+
 module.exports = {
 	createPayment,
 	updatePaymentStatus,
 	cancelPayment,
 	createTransactionZaloPay,
 	handleCallback,
-	getPaymentByBookingId
+	getPaymentByBookingId,
+	refund,
+	queryRefund
 }

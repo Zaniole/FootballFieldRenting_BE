@@ -8,5 +8,7 @@ router.put('/:id', paymentController.updatePaymentStatus);
 router.delete('/:id', paymentController.cancelPayment);
 router.post('/zalopay/', paymentController.createTransactionZaloPay);
 router.post('/zalopay/callback', paymentController.handleCallback);
+router.post('/zalopay/refund', paymentController.refund);
+router.post('/zalopay/query-refund', paymentController.queryRefund)
 
 module.exports = router;

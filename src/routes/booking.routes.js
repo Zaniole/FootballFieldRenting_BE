@@ -9,6 +9,7 @@ router.get('/:id', bookingController.getBookingById);
 router.get('/user/:id', bookingController.getBookingByUserId);
 router.get('/field/:id', bookingController.getBookingByFieldId);
 router.put('/:id', bookingController.updateBookingStatus);
+router.put('/match/:id', bookingController.matchingOpponent)
 router.delete('/:id', bookingController.cancelBooking);
 
 module.exports = router;

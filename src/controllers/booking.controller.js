@@ -1,3 +1,4 @@
+
 const BookingService = require('../services/booking.service');
 
 const getAllBooking = async (req, res) => {
@@ -83,6 +84,17 @@ const cancelBooking = async (req, res) => {
 	}
 }
 
+const matchingOpponent = async (req, res) => {
+	try {
+		const bookingId = req.params.id;
+		const { userId } = req.body;
+		const response = await BookingService.matchingOpponent(bookingId, userId);
+		return res.status(201).json(response)
+	} catch (error) {
+		return res.status(500).json({ message: error.message });
+	}
+}
+
 module.exports = {
 	getAllBooking,
 	createBooking,
@@ -90,5 +102,6 @@ module.exports = {
 	getBookingByUserId,
 	getBookingByFieldId,
 	updateBookingStatus,
-	cancelBooking
+	cancelBooking,
+	matchingOpponent
 }

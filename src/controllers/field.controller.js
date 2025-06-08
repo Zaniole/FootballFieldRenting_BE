@@ -11,7 +11,13 @@ const getAllField = async (req, res) => {
 
 const createField = async (req, res) => {
     try {
-        const newField = await FieldService.createField(req.body);
+        const fieldData = {
+            ...req.body,
+            image: req.file || null
+        };
+
+        const newField = await FieldService.createField(fieldData);
+        console.log(fieldData)
 		return res.status(201).json(newField);
     } catch (error) {
         return res.status(500).json({ message: error.message })

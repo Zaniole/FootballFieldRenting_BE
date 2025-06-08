@@ -1,5 +1,6 @@
 const Field = require('../models/field.model');
 const dayjs = require('dayjs');
+const { uploadToCloudinary } = require('../services/cloudinary.service')
 
 const getAllField = () => {
 	return new Promise(async (resolve, reject) => {
@@ -33,6 +34,8 @@ const createField = (fieldData) => {
 				openTime,
 				description
 			} = fieldData;
+			console.log('fieldData: ', fieldData)
+			console.log('image: ', image)
 
 			// check open time
 			const start = dayjs(`1970-01-01T${openTime.startAt}`); // dùng 01-01-1970 làm ngày giả định, chỉ quan tâm đến giờ
@@ -44,13 +47,18 @@ const createField = (fieldData) => {
 				})
 			}
 
+			let imageUrl = ' ';
+			if (image?.buffer) {
+				imageUrl = await uploadToCloudinary(image.buffer, 'fields')
+			}
+
 			const newField = await Field.create({
 				owner,
 				name,
 				address,
 				subField,
 				service,
-				image,
+				image: imageUrl,
 				price,
 				goldPrice,
 				openTime,
